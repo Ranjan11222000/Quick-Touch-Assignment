@@ -31,3 +31,8 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+ /dart_tool/dartpad/web_plugin_registrant.dart
+ /flutter-plugins-dependencies
+ /dart_tool/flutter_build/
+

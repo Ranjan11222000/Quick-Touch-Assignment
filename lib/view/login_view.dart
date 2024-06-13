@@ -25,8 +25,8 @@ class _LoginViewState extends State<LoginView> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const SizedBox(height: 100,),
                 Text(
                   "Log In",
                   style: text6().copyWith(
@@ -59,7 +59,7 @@ class _LoginViewState extends State<LoginView> {
       controller: loginController.loginId,
       suffixIcon: Icons.login,
       validator: (value){
-        return (value!=null||(value??"").isEmpty)?"Enter the Login ID":null;
+        return (value==null||(value??"").isEmpty)?"Enter the Login ID":null;
       },
     );
   }
@@ -72,7 +72,7 @@ class _LoginViewState extends State<LoginView> {
       iconPressed: loginController.showPassword,
       isPasswordType: !loginController.isPasswordVisible.value,
       validator: (value){
-        return (value!=null||(value??"").isEmpty)?"Enter the password":null;
+        return (value==null||value.isEmpty)?"Enter the password":null;
       },
     ));
   }
@@ -82,7 +82,8 @@ class _LoginViewState extends State<LoginView> {
         onPressed: () {
           if (_formKey.currentState?.validate() ?? false) {
             Get.to(() => const GifView(),
-                transition: Transition.leftToRightWithFade);
+                transition: Transition.leftToRightWithFade,
+              duration: const Duration(seconds: 1));
           }
         },
         style: ElevatedButton.styleFrom(backgroundColor: Colors.teal),
