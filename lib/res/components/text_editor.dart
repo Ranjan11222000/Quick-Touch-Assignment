@@ -5,16 +5,13 @@ class EditText extends StatelessWidget {
   String? hintText;
   IconData? prefixIcon, suffixIcon;
   bool isPasswordType;
-  Color textColor, borderColor;
+  Color textColor;
   TextEditingController controller;
   VoidCallback? iconPressed;
   TextInputType? keyBoardType;
-  TextStyle? hintStyle, textStyle;
-  double? borderRadius;
+  TextStyle? hintStyle;
   String? Function(String?)? validator;
   String? Function(String?)? onChanged;
-  double? iconSize;
-  TextInputAction? textInputAction;
 
   EditText(
       {super.key,
@@ -23,17 +20,11 @@ class EditText extends StatelessWidget {
       this.prefixIcon,
       this.suffixIcon,
       this.isPasswordType=false,
-      this.textColor=Colors.grey,
-      this.borderColor=Colors.grey,
+      this.textColor=Colors.black,
       this.iconPressed,
       this.keyBoardType= TextInputType.text,
-      this.hintStyle,
-      this.textStyle,
-      this.borderRadius,
       this.validator,
-      this.onChanged,
-      this.iconSize,
-      this.textInputAction});
+      this.onChanged});
 
 
   @override
@@ -49,17 +40,13 @@ class EditText extends StatelessWidget {
         contentPadding:
         const EdgeInsets.symmetric(vertical: 13.5, horizontal: 15.0),
         hintText: hintText,
-        hintStyle: hintStyle ?? text4().copyWith(color:Colors.grey),
+        hintStyle: hintStyle ?? text6().copyWith(color:Colors.grey),
         prefixIcon: prefixIcon != null
             ? Icon(
           prefixIcon,
-          color: Colors.grey,
+          color: Colors.blue,
         )
             : null,
-        enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(
-                borderRadius != null ? borderRadius ?? 0.0 : 30.0),
-            borderSide: const BorderSide(width: 2, color: Colors.grey)),
         suffixIcon: suffixIcon != null
             ? isPasswordType
             ? IconButton(
@@ -67,12 +54,14 @@ class EditText extends StatelessWidget {
             icon: Icon(
               suffixIcon,
               color: Colors.grey,
-              size: iconSize,
             ))
             : IconButton(
             onPressed: iconPressed,
-            icon: Icon(suffixIcon, color: Colors.grey, size: iconSize))
+            icon: Icon(suffixIcon, color: Colors.grey))
             : null,
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30.0),
+            borderSide: const BorderSide(width: 1, color: Colors.grey)),
         focusedErrorBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(30)),
           borderSide: BorderSide(color: Colors.red, width: 1),
@@ -82,13 +71,11 @@ class EditText extends StatelessWidget {
           borderSide: BorderSide(color: Colors.red, width: 1),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(
-              borderRadius != null ? borderRadius ?? 0.0 : 30.0),
+          borderRadius: BorderRadius.circular(30.0),
           borderSide: const BorderSide(width: 1, color: Colors.grey),
         ),
       ),
-      style: textStyle ?? text6().copyWith(color: textColor),
-      textInputAction: textInputAction,
+      style: text6().copyWith(color: textColor),
       keyboardType: isPasswordType ? TextInputType.visiblePassword : keyBoardType,
     );
   }
