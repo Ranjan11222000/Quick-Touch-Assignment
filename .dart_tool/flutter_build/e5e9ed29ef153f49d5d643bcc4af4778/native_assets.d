@@ -1,0 +1,1 @@
+ D:\\Me\\assignment\\Quick-Touch-Assignment\\.dart_tool\\flutter_build\\e5e9ed29ef153f49d5d643bcc4af4778\\native_assets.yaml: 

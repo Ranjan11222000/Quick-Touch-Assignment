@@ -1,15 +1,73 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:quick_touch/data/auth.dart';
 
-class LoginController extends GetxController{
+import '../res/utils/utils.dart';
+import '../view/gif_view.dart';
 
+class LoginController extends GetxController {
   final loginId = TextEditingController();
   final password = TextEditingController();
   final isPasswordVisible = false.obs;
+  final isLogin= true.obs;
 
 
-  showPassword(){
-    isPasswordVisible.value= !isPasswordVisible.value;
+  checkLogin(){
+    isLogin.value = !isLogin.value;
   }
 
+  Future<void> login() async {
+    try {
+      await Auth()
+          .signIn(
+              email: loginId.text.toString(),
+              password: password.text.toString())
+          .then(
+        (value) {
+          Get.to(() => const GifView(),
+              transition: Transition.leftToRightWithFade,
+              duration: const Duration(seconds: 1));
+          isLogin.value=true;
+        },
+      );
+    } on FirebaseAuthException catch (e) {
+      Utils.errorSnackBar("Error", e.message ?? "");
+    } on PlatformException catch(e){
+      Utils.errorSnackBar("Error", e.message ?? "");
+    }
+  }
+
+Future<void> checkUserSigningOrNot() async{
+    if(await Auth().authStateChanges.isEmpty){
+      checkLogin();
+    }else{
+      checkLogin();
+    }
+}
+
+
+  Future<void> signUp() async {
+    try {
+      await Auth()
+          .signUp(
+          email: loginId.text.toString(),
+          password: password.text.toString())
+          .then(
+            (value) {
+          checkLogin();
+        },
+      );
+    } on FirebaseAuthException catch (e) {
+      Utils.errorSnackBar("Error", e.message ?? "");
+    } on PlatformException catch(e){
+      Utils.errorSnackBar("Error", e.message ?? "");
+    }
+  }
+
+
+  showPassword() {
+    isPasswordVisible.value = !isPasswordVisible.value;
+  }
 }

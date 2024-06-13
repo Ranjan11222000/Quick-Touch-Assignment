@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../res/components/text_editor.dart';
 import '../res/components/text_style.dart';
 import '../view_model/login_controller.dart';
@@ -26,14 +27,21 @@ class _LoginViewState extends State<LoginView> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
               children: [
-                const SizedBox(height: 100,),
-                Text(
-                  "Log In",
-                  style: text6().copyWith(
-                    fontSize: 50,
-                    fontWeight: FontWeight.bold,
+                const SizedBox(
+                  height: 100,
+                ),
+                Obx(
+                  () => Text(
+                    loginController.isLogin.value ? "Log In" : "Sign Up",
+                    style: text6().copyWith(
+                      fontSize: 50,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.start,
                   ),
-                  textAlign: TextAlign.start,
+                ),
+                const SizedBox(
+                  height: 40,
                 ),
                 loginTextField(),
                 const SizedBox(
@@ -52,44 +60,67 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-
   Widget loginTextField() {
     return EditText(
       hintText: 'Login Id',
       controller: loginController.loginId,
       suffixIcon: Icons.login,
-      validator: (value){
-        return (value==null||(value??"").isEmpty)?"Enter the Login ID":null;
+      validator: (value) {
+        return (value == null || value.isEmpty) ? "Enter the e-mail ID" : null;
       },
     );
   }
 
   Widget passwordTextField() {
-    return Obx(()=>EditText(
-      hintText: 'password',
-      controller: loginController.password,
-      suffixIcon: loginController.isPasswordVisible.value?Icons.visibility_off :Icons.remove_red_eye,
-      iconPressed: loginController.showPassword,
-      isPasswordType: !loginController.isPasswordVisible.value,
-      validator: (value){
-        return (value==null||value.isEmpty)?"Enter the password":null;
-      },
-    ));
+    return Obx(() => EditText(
+          hintText: 'password',
+          controller: loginController.password,
+          suffixIcon: loginController.isPasswordVisible.value
+              ? Icons.visibility_off
+              : Icons.remove_red_eye,
+          iconPressed: loginController.showPassword,
+          isPasswordType: !loginController.isPasswordVisible.value,
+          validator: (value) {
+            return (value == null || value.isEmpty)
+                ? "Enter the password"
+                : null;
+          },
+        ));
   }
 
   Widget loginButton() {
-    return ElevatedButton(
-        onPressed: () {
-          if (_formKey.currentState?.validate() ?? false) {
-            Get.to(() => const GifView(),
-                transition: Transition.leftToRightWithFade,
-              duration: const Duration(seconds: 1));
-          }
-        },
-        style: ElevatedButton.styleFrom(backgroundColor: Colors.teal),
-        child: Text(
-          "LogIn",
-          style: text6().copyWith(fontSize: 18, color: Colors.white),
-        ));
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        loginController.isLogin.value? const Spacer(flex: 2,):Container(),
+        Obx(()=> ElevatedButton(
+              onPressed: () {
+                if (_formKey.currentState?.validate() ?? false) {
+                  // loginController.login();
+                  Get.to(() => const GifView(),
+                      transition: Transition.leftToRightWithFade,
+                      duration: const Duration(seconds: 1));
+                }
+              },
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.teal),
+              child: Text(
+                loginController.isLogin.value ? "LogIn" : "Sign up",
+                style: text6().copyWith(fontSize: 18, color: Colors.white),
+              )),
+        ),
+        const Spacer(),
+        Obx(()=>loginController.isLogin.value?
+            TextButton(
+                    onPressed: () {
+                      loginController.signUp();
+                    },
+                    child: Text(
+          "Sign Up",
+          style: text4().copyWith(color: Colors.blue),
+                    ),
+                  ):Container(),
+        )
+      ],
+    );
   }
 }
