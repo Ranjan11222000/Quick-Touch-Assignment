@@ -23,7 +23,7 @@ class EditText extends StatelessWidget {
       this.prefixIcon,
       this.suffixIcon,
       this.isPasswordType=false,
-      this.textColor=Colors.black,
+      this.textColor=Colors.grey,
       this.borderColor=Colors.grey,
       this.iconPressed,
       this.keyBoardType= TextInputType.text,
@@ -49,7 +49,7 @@ class EditText extends StatelessWidget {
         contentPadding:
         const EdgeInsets.symmetric(vertical: 13.5, horizontal: 15.0),
         hintText: hintText,
-        hintStyle: hintStyle ?? text4(),
+        hintStyle: hintStyle ?? text4().copyWith(color:Colors.grey),
         prefixIcon: prefixIcon != null
             ? Icon(
           prefixIcon,
@@ -59,7 +59,7 @@ class EditText extends StatelessWidget {
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(
                 borderRadius != null ? borderRadius ?? 0.0 : 30.0),
-            borderSide: const BorderSide(width: 1, color: Colors.grey)),
+            borderSide: const BorderSide(width: 2, color: Colors.grey)),
         suffixIcon: suffixIcon != null
             ? isPasswordType
             ? IconButton(
@@ -84,7 +84,7 @@ class EditText extends StatelessWidget {
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(
               borderRadius != null ? borderRadius ?? 0.0 : 30.0),
-          borderSide: const BorderSide(width: 1, color: Colors.black),
+          borderSide: const BorderSide(width: 1, color: Colors.grey),
         ),
       ),
       style: textStyle ?? text6().copyWith(color: textColor),

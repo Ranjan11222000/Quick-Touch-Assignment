@@ -10,6 +10,8 @@ class GifView extends StatefulWidget {
 class _GifViewState extends State<GifView> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Container(
+      color: Colors.teal,
+    );
   }
 }
