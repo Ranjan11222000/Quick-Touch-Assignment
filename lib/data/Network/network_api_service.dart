@@ -10,10 +10,7 @@ class NetworkApiService {
     try {
       String queryString = Uri(queryParameters: queryParameters).query;
       final response = await http.get(
-        Uri.parse('$url?$queryString'), // Append the query string to the URL
-        headers: {
-          "Content-Type": "application/json",
-        },
+        Uri.parse('http://$url?$queryString'), // Append the query string to the URL
       ).timeout(const Duration(seconds: 30));
       responseJson = returnResponse(response);
     } catch(e) {
