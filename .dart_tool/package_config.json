@@ -50,6 +50,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "favorite_button",
+      "rootUri": "file:///C:/Users/vikas/AppData/Local/Pub/Cache/hosted/pub.dev/favorite_button-0.0.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "ffi",
       "rootUri": "file:///C:/Users/vikas/AppData/Local/Pub/Cache/hosted/pub.dev/ffi-2.1.2",
       "packageUri": "lib/",
@@ -344,7 +350,7 @@
       "languageVersion": "3.4"
     }
   ],
-  "generated": "2024-06-14T06:08:50.942461Z",
+  "generated": "2024-06-14T07:20:56.390400Z",
   "generator": "pub",
   "generatorVersion": "3.4.0",
   "flutterRoot": "file:///D:/Download%20Software/Flutter/flutter_windows_3.16.5-stable/flutter",
