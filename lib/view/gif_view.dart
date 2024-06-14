@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../data/response/status.dart';
@@ -75,29 +78,47 @@ class _GifViewState extends State<GifView> {
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10),
                   itemBuilder: (context, index) {
-                    return Image.network(
-                      gifController.filterList[index].images?.original?.url ??
-                          "",
-                      loadingBuilder: (BuildContext context, Widget child,
-                          ImageChunkEvent? loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return Center(
-                          child: SizedBox(
-                            height: 25,
-                            width: 25,
-                            child: CircularProgressIndicator(
-                              value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded /
-                                      loadingProgress.expectedTotalBytes!
-                                  : null,
+                    return Stack(
+                      children: [
+                        Image.network(
+                          fit:BoxFit.fill,
+                          gifController.filterList[index].images?.original?.url ??
+                              "",
+                          loadingBuilder: (BuildContext context, Widget child,
+                              ImageChunkEvent? loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Center(
+                              child: SizedBox(
+                                height: 25,
+                                width: 25,
+                                child: CircularProgressIndicator(
+                                  value: loadingProgress.expectedTotalBytes != null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes!
+                                      : null,
+                                ),
+                              ),
+                            );
+                          },
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Center(
+                                child: Text("Failed to load image"));
+                          },
+                        ),
+                        Positioned(
+                          right: 0,
+                          bottom: 20,
+                          child: Obx(
+                          ()=> FavoriteButton(
+                              isFavorite: gifController.gifFav.value,
+                              valueChanged: (isFavorite) {
+                                log('Is Favorite : $isFavorite');
+                                gifController.gifFav.value= isFavorite;
+                              },
                             ),
                           ),
-                        );
-                      },
-                      errorBuilder: (context, error, stackTrace) {
-                        return const Center(
-                            child: Text("Failed to load image"));
-                      },
+                        )
+                      ],
                     );
                   },
                   itemCount: gifController.filterList.length,

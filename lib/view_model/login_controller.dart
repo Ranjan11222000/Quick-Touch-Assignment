@@ -31,7 +31,7 @@ class LoginController extends GetxController {
                 transition: Transition.leftToRightWithFade,
                 duration: const Duration(seconds: 1));
           }
-          checkLogin();
+          // checkLogin();
         },
       );
     } on FirebaseAuthException catch (e) {

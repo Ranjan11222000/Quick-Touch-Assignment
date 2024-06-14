@@ -14,6 +14,7 @@ class GifController extends GetxController {
   List filterList = <Data>[];
   final rxStatus = Status.LOADING.obs;
   final respMsg = "".obs;
+  final gifFav=false.obs;
 
   void setRxtStatus(Status value) => rxStatus.value = value;
 
