@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../data/response/status.dart';
 import '../res/components/text_editor.dart';
 import '../res/components/text_style.dart';
 import '../view_model/gif_controller.dart';
@@ -12,8 +13,13 @@ class GifView extends StatefulWidget {
 }
 
 class _GifViewState extends State<GifView> {
-
   final gifController = Get.put(GifController());
+
+  @override
+  void initState() {
+    gifController.getGifApi();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +35,10 @@ class _GifViewState extends State<GifView> {
         child: Column(
           children: [
             searchEditText(),
+            const SizedBox(
+              height: 15,
+            ),
+            Flexible(child: gifListView())
           ],
         ),
       ),
@@ -40,6 +50,59 @@ class _GifViewState extends State<GifView> {
       controller: gifController.gifSearch,
       hintText: "Search gif..",
       prefixIcon: Icons.search,
+      onChanged: (value) {
+        gifController.searchingGif(value.toString());
+        setState(() {});
+        return null;
+      },
     );
+  }
+
+  gifListView() {
+    return Obx(() {
+      switch (gifController.rxStatus.value) {
+        case Status.LOADING:
+          return const CircularProgressIndicator();
+        case Status.ERROR:
+          return const Text("ERROR");
+        case Status.COMPLETED:
+          return gifController.filterList.isEmpty
+              ? const Text("NO GIF")
+              : GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 200,
+                      childAspectRatio: 3 / 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10),
+                  itemBuilder: (context, index) {
+                    return Image.network(
+                      gifController.filterList[index].images?.original?.url ??
+                          "",
+                      loadingBuilder: (BuildContext context, Widget child,
+                          ImageChunkEvent? loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return Center(
+                          child: SizedBox(
+                            height: 25,
+                            width: 25,
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes!
+                                  : null,
+                            ),
+                          ),
+                        );
+                      },
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Center(
+                            child: Text("Failed to load image"));
+                      },
+                    );
+                  },
+                  itemCount: gifController.filterList.length,
+                );
+      }
+    });
   }
 }
