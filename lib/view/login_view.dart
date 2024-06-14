@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../res/components/text_editor.dart';
 import '../res/components/text_style.dart';
 import '../view_model/login_controller.dart';
-import 'gif_view.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -62,11 +60,15 @@ class _LoginViewState extends State<LoginView> {
 
   Widget loginTextField() {
     return EditText(
-      hintText: 'Login Id',
+      hintText: 'e-mail ID',
       controller: loginController.loginId,
-      suffixIcon: Icons.login,
+      suffixIcon: Icons.mail,
       validator: (value) {
-        return (value == null || value.isEmpty) ? "Enter the e-mail ID" : null;
+        return (value == null || value.isEmpty)
+            ? "Enter the e-mail ID"
+            : value.isEmail
+                ? null
+                : "Enter valid e-mail ID";
       },
     );
   }
@@ -92,14 +94,15 @@ class _LoginViewState extends State<LoginView> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        loginController.isLogin.value? const Spacer(flex: 2,):Container(),
-        Obx(()=> ElevatedButton(
+        Obx(
+          () => ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState?.validate() ?? false) {
-                  // loginController.login();
-                  Get.to(() => const GifView(),
-                      transition: Transition.leftToRightWithFade,
-                      duration: const Duration(seconds: 1));
+                  if (loginController.isLogin.value) {
+                    loginController.login();
+                  } else {
+                    loginController.signUp();
+                  }
                 }
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.teal),
@@ -108,17 +111,16 @@ class _LoginViewState extends State<LoginView> {
                 style: text6().copyWith(fontSize: 18, color: Colors.white),
               )),
         ),
-        const Spacer(),
-        Obx(()=>loginController.isLogin.value?
-            TextButton(
-                    onPressed: () {
-                      loginController.signUp();
-                    },
-                    child: Text(
-          "Sign Up",
-          style: text4().copyWith(color: Colors.blue),
-                    ),
-                  ):Container(),
+        Obx(
+          () => TextButton(
+            onPressed: () {
+              loginController.checkLogin();
+            },
+            child: Text(
+              !loginController.isLogin.value ? "LogIn" : "Sign up",
+              style: text4().copyWith(color: Colors.blue),
+            ),
+          ),
         )
       ],
     );
