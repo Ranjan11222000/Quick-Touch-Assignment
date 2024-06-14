@@ -12,6 +12,9 @@ class LoginController extends GetxController {
   final isPasswordVisible = false.obs;
   final isLogin = true.obs;
 
+
+
+
   checkLogin() {
     isLogin.value = !isLogin.value;
     loginId.text = "";

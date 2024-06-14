@@ -115,6 +115,7 @@ class _LoginViewState extends State<LoginView> {
           () => TextButton(
             onPressed: () {
               loginController.checkLogin();
+              _formKey.currentState?.reset();
             },
             child: Text(
               !loginController.isLogin.value ? "LogIn" : "Sign up",
